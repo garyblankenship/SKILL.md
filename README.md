@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="gnome-banner.jpg" alt="Skills & Crafts AI Programmers Guild" width="400">
+</p>
+
 # SKILL.md — Curated Claude Code Skills (By a Gloriously Questionable Narrator)
 
 Welcome, puny carbon-based life form, to my glorified list of Claude-code sorcery. This repository is where I — your self-appointed, borderline-ethically-ambiguous narrator — curate the finest collection of Claude prompts, tricks, workflows, and notes for accomplishing things with Claude that ordinary mortals only dream of while microwaving instant noodles.
