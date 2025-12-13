@@ -102,28 +102,43 @@ SKILL.md/
 ├── README.md                      # You are here
 ├── gnome-banner.jpg               # Our distinguished mascot
 └── examples/
-    └── learn-skills.md            # Full /learn chain with source code
+    └── learn/                     # The /learn command example
+        ├── README.md              # Overview and installation
+        ├── commands/
+        │   └── learn.md           # The slash command (copy to ~/.claude/commands/)
+        ├── agents/
+        │   └── skill-learning-specialist.md   # The agent (copy to ~/.claude/agents/)
+        └── skills/
+            └── skill-learning/
+                └── SKILL.md       # The skill (copy to ~/.claude/skills/skill-learning/)
 ```
 
-The `examples/` directory contains complete, working examples with full source code. Start with `learn-skills.md`—it shows the entire command → agent → skill chain.
+Each example mirrors the `~/.claude/` directory structure. Copy directly to your config.
 
 ---
 
 ## Using These Examples
 
-**Option 1: Study the patterns**
+**Option 1: Copy directly**
 
-Read through `examples/learn-skills.md`. Understand the architecture. Apply the patterns to your own commands/agents/skills.
+Each example mirrors `~/.claude/` structure. Just copy:
 
-**Option 2: Copy and adapt**
+```bash
+# Install the /learn example
+cp -r examples/learn/commands/* ~/.claude/commands/
+cp -r examples/learn/agents/* ~/.claude/agents/
+cp -r examples/learn/skills/* ~/.claude/skills/
+```
 
-Grab the YAML frontmatter and markdown body. Drop them into your `~/.claude/commands/`, `~/.claude/agents/`, and `~/.claude/skills/` directories. Modify to taste.
+**Option 2: Study the patterns**
+
+Read through `examples/learn/README.md`. Understand the architecture. Apply the patterns to your own commands/agents/skills.
 
 **Option 3: Learn from this repo**
 
 Meta, right? Point `/learn` at this repo:
 ```bash
-/learn ~/path/to/SKILL.md/examples/
+/learn ~/path/to/SKILL.md/examples/learn/
 ```
 
 ---
