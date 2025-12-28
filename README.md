@@ -155,6 +155,25 @@ This isn't just organization. It's a forcing function for clean separation of co
 
 ---
 
+## Validation
+
+Lint your components before committing with [cclint](https://github.com/dotcommander/cclint):
+
+```bash
+# Install
+go install github.com/dotcommander/cclint@latest
+
+# Lint a file
+cclint ~/.claude/agents/my-agent.md -v
+
+# Lint all components
+cclint ~/.claude/
+```
+
+Catches schema violations, bloated agents, missing sections, and broken references. The examples in this repo pass `cclint` validation.
+
+---
+
 ## Contributing
 
 Found a pattern worth sharing? Built a useful command chain?
@@ -162,9 +181,16 @@ Found a pattern worth sharing? Built a useful command chain?
 1. Fork this repo
 2. Add your example to `examples/`
 3. Follow the format: hook-first intro, clear value proposition, full source code
-4. PR it
+4. Run `cclint examples/your-example/ --type <agent|command|skill>` to validate
+5. PR it
 
 Keep examples generic and reusable. Specific tool names are fine. Paths to your personal directories are not.
+
+---
+
+## Credits
+
+- [cclint](https://github.com/dotcommander/cclint) — Claude Code component linter by [@dotcommander](https://github.com/dotcommander)
 
 ---
 

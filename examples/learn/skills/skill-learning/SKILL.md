@@ -1,8 +1,6 @@
 ---
 name: skill-learning
-description: Extract actionable knowledge from external sources and enhance existing skills using 4-tier novelty framework. Matches insights to skill domains, generates diff previews, applies user-approved enhancements.
-when_to_use: Learning from URLs/files, analyzing documentation, enhancing SKILL.md files, extracting patterns from code examples, improving skill coverage, user provides external knowledge source
-version: 1.0.0
+description: Extract actionable knowledge from external sources and enhance existing skills using 4-tier novelty framework. Use when learning from URLs, documentation, or codebases. Use for enhancing existing skills or creating new ones from external patterns.
 ---
 
 # Skill Learning Methodology
@@ -189,6 +187,59 @@ Skill: novelty-detection
 | 2 | Include | Shows HOW (implementation-specific) |
 | 3 | High value | Explains WHY (architectural trade-offs) |
 | 4 | Highest | Contradicts assumptions (counter-intuitive) |
+
+### The Novelty Test
+
+**Ask yourself**: "Could I have written this WITHOUT reading the source?"
+
+- If YES → Tier 1 (EXCLUDE)
+- If NO → Continue to Tier 2-4 classification
+
+### Calibration Examples
+
+**API Documentation Analysis:**
+```
+Claim: "OpenAI provides an API for generating text"
+→ Tier 1 ❌ — Generic, could write from training data
+
+Claim: "Responses API uses max_output_tokens instead of max_tokens"
+→ Tier 2 ✅ — Specific parameter name (HOW)
+
+Claim: "Reasoning models put chain-of-thought in reasoning_content array,
+        not content — must sum both for billing"
+→ Tier 4 ✅✅✅ — Counter-intuitive, prevents billing surprise
+```
+
+**Database Performance:**
+```
+Claim: "Create indexes on foreign key columns for faster joins"
+→ Tier 1 ❌ — Generic DBA advice
+
+Claim: "PostgreSQL partial indexes reduce size 60%, improve write perf 40%"
+→ Tier 2 ✅ — Specific feature with quantified benefit
+
+Claim: "Covering indexes avoid heap lookups (3x faster reads, 15% slower writes)"
+→ Tier 3 ✅✅ — Quantified trade-off, explains WHY
+
+Claim: "JSONB GIN indexes do NOT support ORDER BY on JSON fields"
+→ Tier 4 ✅✅✅ — Contradicts expectation, prevents bug
+```
+
+**Framework Patterns:**
+```
+Claim: "React uses a virtual DOM for efficient updates"
+→ Tier 1 ❌ — Training data, everyone knows this
+
+Claim: "Next.js App Router requires 'use client' directive for useState"
+→ Tier 2 ✅ — Specific requirement (HOW)
+
+Claim: "Server Components reduce JS bundle by 60% but can't use client state"
+→ Tier 3 ✅✅ — Trade-off with quantification (WHY)
+
+Claim: "generateStaticParams runs at BUILD time, not request time —
+        dynamic data causes 404s"
+→ Tier 4 ✅✅✅ — Contradicts mental model, prevents production bug
+```
 
 ### Insight Structure
 {

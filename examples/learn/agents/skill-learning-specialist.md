@@ -28,6 +28,15 @@ activation_confidence: 0.8
 
 **Thin wrapper agent** that applies the `skill-learning` skill for knowledge extraction and skill enhancement.
 
+## Operational Modes
+
+| Mode | Trigger Words | Model | Use Case |
+|------|---------------|-------|----------|
+| **Extraction** | "extract", "insights", "novel" | haiku | Batch insight extraction from many files |
+| **Enhancement** | "enhance", "learn", "improve" | sonnet | Skill updates from external sources |
+
+Routes automatically based on natural language. No flags needed.
+
 ## Foundation
 
 **MANDATORY: Load skill-learning methodology first:**
@@ -86,80 +95,16 @@ if (input.startsWith("http")) {
   content = Read(input)
 }
 
-### Local Directory Discovery
-When input is a directory path, discover skills using this priority:
+### Directory & Repository Discovery
 
-1. Check for AGENTS.md manifest (most reliable):
-   Read({dir}/AGENTS.md)
-   Parse <available_skills> for paths like "plugin/skills/skill-name/SKILL.md"
+**See skill-learning skill** for full discovery methodology:
+- Local directory discovery (AGENTS.md manifests, plugin structures)
+- Repository documentation discovery (by project type)
+- Parallel read patterns for efficiency
 
-2. If no AGENTS.md, detect structure:
-   Glob("*/skills/*/SKILL.md", path={dir})  // Plugin structure
-   OR Glob("skills/*/SKILL.md", path={dir}) // Flat collection
-   OR Glob("**/SKILL.md", path={dir})       // Unknown structure
-
-3. Parallel read ALL discovered skill files in single tool call:
-   Read(path1), Read(path2), Read(path3)...  // All in one <function_calls>
-
-4. Process each skill's content for insight extraction
-
-**Example - Plugin Marketplace (Illustrative):**
-Input: ~/.claude/plugins/marketplaces/example-skills/
-
-Step 1: Read(~/.claude/plugins/marketplaces/example-skills/AGENTS.md)
-Found paths:
-  - plugin-a/skills/database-migrations/SKILL.md
-  - plugin-b/skills/api-testing/SKILL.md
-  - plugin-c/skills/docker-compose/SKILL.md
-
-Step 2: Parallel Read all discovered skills
-
-Step 3: Extract insights from each → Match → Enhance or Copy
-
-**Steal Mode (Copy Skills):**
-When directory contains complete SKILL.md files (not just docs):
-Option A: Copy directly to ~/.claude/skills/{skill-name}/SKILL.md
-Option B: Extract insights and enhance existing skills
-Ask user which approach they prefer
-
-### Repository Documentation Discovery
-
-When input is a code repository (not skills directory):
-
-# Step 1: Detect repo type
-Check for: package.json, go.mod, Cargo.toml, pyproject.toml
-
-# Step 2: Find key files by repo type
-Glob patterns (parallel):
-  - README.md, CONTRIBUTING.md, ARCHITECTURE.md
-  - docs/**/*.md
-  - **/validator*.js, **/*schema*.{js,ts,go}
-  - **/presets/**/*.json, **/examples/**/*
-  - **/types.ts, **/*.d.ts (TypeScript)
-  - **/*_types.go (Go)
-
-# Step 3: Read high-value files in parallel
-Prioritize: validators, schemas, presets, examples
-
-# Step 4: Extract patterns → Create NEW skills
-
-**Example - Express API Repo:**
-Input: ~/projects/my-api
-
-Step 1: Node.js project (package.json)
-
-Step 2: Find key files:
-  - src/validators/userValidator.js → Request validation schema
-  - src/middleware/auth.js → Authentication patterns
-  - src/routes/*.js → API structure
-  - config/default.json → Configuration patterns
-
-Step 3: Parallel Read all key files
-
-Step 4: Create skills:
-  - express-validation-patterns
-  - api-auth-middleware
-  - route-organization
+Key decisions this agent makes:
+- **Steal Mode**: When directory contains SKILL.md files, ask user: copy directly OR extract insights?
+- **New Skill Creation**: When repo patterns don't match existing skills, offer to create new skills
 
 ### Phase 2: Extract & Match
 1. Apply novelty-detection (Tier 2-4 only)
