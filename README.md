@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="gnome-banner.jpg" alt="Skills & Crafts AI Programmers Guild" width="400">
-</p>
-
 # SKILL.md — Self-Improving Claude Code
 
 **What if your AI assistant could teach itself?**
@@ -100,7 +96,6 @@ Only Tier 2-4 insights make it into your skills. No bloat. No redundancy. Just t
 ```
 SKILL.md/
 ├── README.md                      # You are here
-├── gnome-banner.jpg               # Our distinguished mascot
 └── examples/
     └── learn/                     # The /learn command example
         ├── README.md              # Overview and installation
