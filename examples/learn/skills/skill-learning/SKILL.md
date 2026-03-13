@@ -370,10 +370,39 @@ Next source? (file path, URL, or 'done')
 **Source**: User runs `/learn https://svelte.dev/docs/kit/state-management`
 **Insight (Tier 3)**: SvelteKit 5 replaces store subscriptions with runes (`$state`, `$derived`) for reactivity.
 **Target Skill**: `sveltekit-patterns`
-**Result**: The agent proposes adding a "Runes Migration" section to the `sveltekit-patterns` skill, demonstrating how to refactor old `$store` logic into the new runes paradigm.
+**Agent Output Preview**:
+```markdown
+## Enhancement Proposal (Score: 85, Tier: 3)
+
+**Insight**: SvelteKit 5 relies on runes ($state, $derived) instead of store subscriptions for reactive UI state.
+**Target Skill**: skills/sveltekit-patterns/SKILL.md
+**Section**: Patterns
+
+**Proposed Addition**:
+### Runes vs Stores (Svelte 5)
+<!-- Source: https://svelte.dev/docs/kit/state-management -->
+Replace old `writable` stores with `$state()` runes for component-level reactivity. Do not use `$:` for derived state; use `$derived()` instead.
+
+Apply this enhancement? [y/n/edit]
+```
 
 ### Example 2: Extracting from Codebase
 **Source**: User runs `/learn ~/projects/api-gateway`
-**Insight (Tier 2)**: The codebase uses a specific Zod schema wrapper for all incoming request validation.
+**Insight (Tier 2)**: The codebase uses a specific Zod schema wrapper (`validateRequest(schema)`) for all incoming request validation.
 **Target Skill**: `api-middleware`
-**Result**: The agent proposes adding a "Zod Validation Preset" to the `api-middleware` skill so that all future endpoints generated for this project automatically include the correct schema wrapper.
+**Agent Output Preview**:
+```markdown
+## Enhancement Proposal (Score: 70, Tier: 2)
+
+**Insight**: Local convention uses `validateRequest(schema)` middleware pattern for all Zod validation.
+**Target Skill**: skills/api-middleware/SKILL.md
+**Section**: Anti-Patterns / Common Mistakes
+
+**Proposed Addition**:
+### Zod Validation Convention
+<!-- Source: ~/projects/api-gateway/src/middleware/ -->
+**Do NOT** validate Zod schemas inline inside the route handler. 
+**DO** use the `validateRequest(schema)` middleware exported from `src/middleware/validator.ts`.
+
+Apply this enhancement? [y/n/edit]
+```
