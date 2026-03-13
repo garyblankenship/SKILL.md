@@ -1,200 +1,151 @@
-# SKILL.md — Self-Improving Claude Code
+# SKILL.md — The Self-Improving Claude Code
 
-**What if your AI assistant could teach itself?**
+Look at your current AI setup. You write a brilliant prompt. It works perfectly on Monday. But by Friday? A framework updates. A new pattern emerges. Your prompt is dead. It is rotting on your hard drive! *This is a tragedy of static configuration.*
 
-That's the idea behind this repo. Most Claude Code setups have static prompts that rot over time. New framework version? Your skills are stale. Better pattern discovered? Manual updates. Documentation changed? You're behind.
+We are going to fix this today. Not by writing more prompts. By building a system that *learns*.
 
-`/learn` fixes this. Point it at any source—URL, file, skill marketplace, or codebase—and watch it extract patterns, match them to your existing skills, and propose targeted enhancements. Your Claude Code setup becomes self-improving.
+This repository contains drop-in [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) components that make your setup self-improving. I will demonstrate the flagship command: `/learn`.
+
+Watch what happens when we unleash this system on the real world:
 
 ```bash
-/learn https://svelte.dev/docs/kit          # Learn from documentation
-/learn ~/docs/architecture.md               # Learn from local files
-/learn ~/.claude/plugins/marketplaces/      # Copy skills from marketplaces
-/learn ~/projects/my-api                    # Extract patterns from codebases
+/learn https://svelte.dev/docs/kit          # We feed it documentation!
+/learn ~/docs/architecture.md               # We feed it local designs!
+/learn ~/.claude/plugins/marketplaces/      # We absorb other skills!
+/learn ~/projects/my-api                    # We extract patterns from living code!
 ```
 
-Read the SvelteKit 5 migration guide? Your `sveltekit-patterns` skill now knows about runes. Found a great Express middleware pattern? Your `api-middleware` skill just got smarter. Discovered a skill marketplace? Copy the good ones directly.
+Read the SvelteKit 5 migration guide? Your `sveltekit-patterns` skill now knows about runes. Discovered a new Express middleware pattern? Your `api-middleware` skill just got smarter. It adapts!
 
 ---
 
-## How It Works
+## The Architecture: Three Fundamental Layers
 
-Three layers, each doing one thing well:
+If you put everything in one file, the system collapses into chaos. We must have a profound separation of concerns. Three layers. Each doing exactly one thing. It is beautiful!
 
-```
-/learn <source>
-    ↓
-┌─────────────────────────────────────────────────────────────┐
-│  COMMAND (26 lines)                                         │
-│  Thin trigger. Delegates everything to the specialist.      │
-└─────────────────────────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────────────────────────┐
-│  AGENT (skill-learning-specialist)                          │
-│  The orchestrator. Handles URLs, directories, repos.        │
-│  Manages the approval loop. Doesn't contain methodology.    │
-└─────────────────────────────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────────────────────────────┐
-│  SKILL (skill-learning)                                     │
-│  The brain. 7-phase workflow. Novelty detection.            │
-│  Matching algorithm. CLEAR validation. All the methodology. │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    Source["/learn &lt;source&gt;"] --> Command
+    
+    subgraph Architecture ["Three layers, each doing one thing well"]
+        Command["COMMAND (26 lines)<br/><i>Thin trigger. Delegates everything to the specialist.</i>"]
+        Agent["AGENT (skill-learning-specialist)<br/><i>The orchestrator. Handles URLs, directories, repos.<br/>Manages the approval loop. Doesn't contain methodology.</i>"]
+        Skill["SKILL (skill-learning)<br/><i>The brain. 7-phase workflow. Novelty detection.<br/>Matching algorithm. CLEAR validation. All the methodology.</i>"]
+        
+        Command --> Agent
+        Agent --> Skill
+    end
+
+    classDef default fill:#1a1a1a,stroke:#333,stroke-width:1px,color:#fff,text-align:left
+    classDef source fill:none,stroke:none,color:#58a6ff,font-weight:bold
+    class Source source
 ```
 
-**The pattern**: Commands trigger. Agents orchestrate. Skills contain methodology.
+**The Law of Separation**: Commands trigger! Agents orchestrate! Skills contain the methodology!
 
-This separation matters. Commands stay tiny. Agents handle real-world messiness (blocked URLs, directory structures, user approval). Skills hold reusable knowledge that multiple agents can load.
+Why does this matter? Because commands must stay tiny. Agents must handle the messy, unpredictable real world (blocked URLs, missing directories). And the Skills—the *brains*—must hold pure, reusable knowledge that any agent can load. You must not mix them!
 
 ---
 
-## What `/learn` Can Do
+## The Experiments: What `/learn` Can Do
 
-### Learn from URLs
+Let us run some experiments.
+
+### Experiment 1: The Documentation
 ```bash
 /learn https://docs.example.com/guide
 ```
-Fetches the page (with Jina fallback for blocked sites), extracts technical patterns, filters out training data using novelty detection, matches insights to your skills, shows diffs, applies on approval.
+It fetches the page. It extracts the technical patterns. It matches them to your existing skills. It shows you the diff, and upon your approval, it permanently alters its own brain.
 
-### Learn from Files
-```bash
-/learn ~/docs/architecture.md
-```
-Same pipeline, local source. Great for internal documentation, design docs, or notes you want to codify into skills.
-
-### Learn from Skill Marketplaces
-```bash
-/learn ~/.claude/plugins/marketplaces/my-skills/
-```
-Discovers skills via AGENTS.md manifests or glob patterns. You choose: copy skills wholesale, or extract insights to enhance existing skills.
-
-### Learn from Codebases
+### Experiment 2: The Living Codebase
 ```bash
 /learn ~/projects/my-api
 ```
-Detects project type (Node.js, Go, Rust, Python). Finds validators, schemas, middleware, presets. Extracts patterns. Creates NEW skills from what it finds.
+Are you tired of explaining your repo's conventions over and over? Point it here! It detects the project type. It finds your schemas, your middleware, your presets. It extracts your unique patterns and *creates a new skill* from what it finds.
+
+### Experiment 3: The Marketplace
+```bash
+/learn ~/.claude/plugins/marketplaces/my-skills/
+```
+It discovers skills via AGENTS.md manifests or glob patterns. You choose: copy skills wholesale, or extract their insights to enhance your own. 
 
 ---
 
-## The Secret Sauce: Novelty Detection
+## The Demonstration of Novelty Detection
 
-Not everything in documentation is worth learning. `/learn` uses a 4-tier novelty framework:
+If you feed an AI everything, you teach it nothing! You bloat its context! You drown the signal in noise!
 
-| Tier | Include? | What It Means |
+How do we prevent this? We use a strict, unforgiving filter: **Novelty Detection.** When `/learn` reads a document, it asks a beautiful, critical question: *"Does the model already know this?"*
+
+We divide all knowledge into four tiers. Pay close attention to Tier 1:
+
+| Tier | Status | What It Means |
 |------|----------|---------------|
-| 1 | **EXCLUDE** | Training data—Claude already knows this |
-| 2 | Include | Implementation-specific—shows HOW |
-| 3 | High value | Architectural trade-offs—explains WHY |
-| 4 | Highest | Counter-intuitive—contradicts assumptions |
+| 1 | **REJECTED!** | Training data. The model already knows it. We throw it away! |
+| 2 | **ACCEPTED** | Implementation details. The precise *how*. |
+| 3 | **HIGH VALUE** | Architectural trade-offs. The *why*. |
+| 4 | **THE HOLY GRAIL** | Counter-intuitive. Contradicts standard assumptions. |
 
-Only Tier 2-4 insights make it into your skills. No bloat. No redundancy. Just the stuff that actually makes your setup better.
+We are ruthless with Tier 1. We only inject Tiers 2, 3, and 4 into your skills. The result? Pure, concentrated signal. Your skills become incredibly potent, and the context window remains pristine.
 
----
-
-## Repository Structure
-
-```
-SKILL.md/
-├── README.md                      # You are here
-└── examples/
-    └── learn/                     # The /learn command example
-        ├── README.md              # Overview and installation
-        ├── commands/
-        │   └── learn.md           # The slash command (copy to ~/.claude/commands/)
-        ├── agents/
-        │   └── skill-learning-specialist.md   # The agent (copy to ~/.claude/agents/)
-        └── skills/
-            └── skill-learning/
-                └── SKILL.md       # The skill (copy to ~/.claude/skills/skill-learning/)
-```
-
-Each example mirrors the `~/.claude/` directory structure. Copy directly to your config.
+*The system works!*
 
 ---
 
-## Using These Examples
+## The Laboratory Setup (Installation)
 
-**Option 1: Copy directly**
+How do you build this in your own laboratory?
 
-Each example mirrors `~/.claude/` structure. Just copy:
+**Option 1: The Quick Start**
+Each example mirrors the exact `~/.claude/` structure. You simply copy them over!
 
 ```bash
-# Install the /learn example
+# Install the /learn command into your environment
 cp -r examples/learn/commands/* ~/.claude/commands/
 cp -r examples/learn/agents/* ~/.claude/agents/
 cp -r examples/learn/skills/* ~/.claude/skills/
 ```
 
-**Option 2: Study the patterns**
-
-Read through `examples/learn/README.md`. Understand the architecture. Apply the patterns to your own commands/agents/skills.
-
-**Option 3: Learn from this repo**
-
-Meta, right? Point `/learn` at this repo:
+**Option 2: The Meta Experiment**
+Point `/learn` at this very repository. Let the system learn how to build itself!
 ```bash
 /learn ~/path/to/SKILL.md/examples/learn/
 ```
 
 ---
 
-## The Architecture Pattern
+## We Must Verify Our Results!
 
-Every example in this repo follows the same pattern:
-
-1. **Thin commands** — YAML frontmatter + delegation. No logic.
-2. **Orchestrating agents** — Handle I/O, errors, user interaction. Load skills for methodology.
-3. **Fat skills** — Complete workflows. Reusable across agents. The actual knowledge.
-
-This isn't just organization. It's a forcing function for clean separation of concerns. Commands can't bloat because they only delegate. Agents can't hardcode methodology because it lives in skills. Skills stay focused because they're loaded on demand.
-
----
-
-## Validation
-
-Lint your components before committing with [cclint](https://github.com/dotcommander/cclint):
+We are not guessing here! You must lint your components before committing. We use [cclint](https://github.com/dotcommander/cclint):
 
 ```bash
-# Install
+# Install the instrument
 go install github.com/dotcommander/cclint@latest
 
-# Lint a file
-cclint ~/.claude/agents/my-agent.md -v
-
-# Lint all components
+# Run the verification!
 cclint ~/.claude/
 ```
 
-Catches schema violations, bloated agents, missing sections, and broken references. The examples in this repo pass `cclint` validation.
+It catches schema violations. It catches bloated agents. It ensures our fundamental laws are not broken. Every example in this repository passes `cclint`. It must balance!
 
 ---
 
-## Contributing
+## Contributing & Credits
 
-Found a pattern worth sharing? Built a useful command chain?
+Found a pattern worth sharing? Run your own experiments!
+1. Fork this repository.
+2. Add your discovery to `examples/`.
+3. Follow the format.
+4. Run `cclint` to verify your results.
+5. Submit a PR.
 
-1. Fork this repo
-2. Add your example to `examples/`
-3. Follow the format: hook-first intro, clear value proposition, full source code
-4. Run `cclint examples/your-example/ --type <agent|command|skill>` to validate
-5. PR it
+**Credits:**
+- [cclint](https://github.com/dotcommander/cclint) — The Claude Code component linter by [@dotcommander](https://github.com/dotcommander)
 
-Keep examples generic and reusable. Specific tool names are fine. Paths to your personal directories are not.
-
----
-
-## Credits
-
-- [cclint](https://github.com/dotcommander/cclint) — Claude Code component linter by [@dotcommander](https://github.com/dotcommander)
-
----
-
-## License
-
-MIT. Use it, remix it, improve it. If something breaks, file an issue. If something works brilliantly, also file an issue—we like hearing about wins.
+**License:** MIT. Remix it. Improve it.
 
 ---
 
 <p align="center">
-  <i>Static prompts rot. Self-improving configurations don't.</i>
+  <i>Static prompts rot. Self-improving configurations live forever.</i>
 </p>
