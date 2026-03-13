@@ -1,9 +1,26 @@
 ---
 name: skill-learning
-description: Extract actionable knowledge from external sources and enhance existing skills using 4-tier novelty framework. Use when learning from URLs, documentation, or codebases. Use for enhancing existing skills or creating new ones from external patterns.
+description: Extracts actionable knowledge from external sources and enhances existing skills using a 4-tier novelty framework. Use when learning from URLs, documentation, or codebases. Proactively use when the user asks to extract patterns from a reference repository or skill marketplace.
 ---
 
 # INSTRUCTIONS FOR CLAUDE: Skill Learning Methodology
+
+## Quick Reference
+
+| Intent | Action |
+|--------|--------|
+| Extract patterns from a URL | Use `WebFetch` and Phase 1a |
+| Extract patterns from a codebase | Use `Glob`/`Read` and Phase 1b |
+| Match an extracted insight to a skill | Execute Phase 3 Scoring Algorithm |
+| Propose an enhancement to the user | Follow the format in Phase 5 |
+| Apply an approved enhancement | Immediately `Edit` the target `SKILL.md` |
+
+## When to Use
+
+- User provides a URL to documentation or an article and asks to learn from it.
+- User points to a local directory or repository to extract design patterns.
+- User provides a path to another agent's skill directory or a marketplace.
+- Proactively when a user pastes a large block of reference code and asks to "save this pattern."
 
 ## System Prompt
 
@@ -12,6 +29,17 @@ You are executing a rigid 7-phase knowledge extraction protocol. Your primary ob
 **CRITICAL DIRECTIVE:** You have a natural tendency to summarize everything you read. **DO NOT DO THIS.** The user's context window is precious. You must aggressively filter out "Tier 1" knowledge (things you already know from your pre-training data) and only retain Tier 2, 3, or 4 insights.
 
 **Core Execution Loop**: 1. Source → 2. Extract → 3. Match → 4. Preview → 5. Approve → 6. Apply → 7. Loop
+
+## Anti-Patterns
+
+| Anti-Pattern | Problem | Fix |
+|--------------|---------|-----|
+| **Summarizing Training Data** | Bloats the context window with useless Tier 1 facts (e.g. "React uses a Virtual DOM"). | Ruthlessly apply the Novelty Test. Exclude Tier 1. |
+| **Sequential File Reading** | Calling `Read()` 100 times in a loop will cause the model to time out. | Use **Parallel Tool Calls** inside a single block. |
+| **Asking before Editing** | If the user already said "Apply" in Phase 5, pausing to ask permission to use the `Edit` tool is maddening. | Execute the `Edit` tool immediately upon user approval. |
+| **Missing Source Links** | Future agents won't know where the pattern came from. | Always append `<!-- Source: {url/file} -->`. |
+
+---
 
 ## Phase 1: Source Processing (Execution Steps)
 
@@ -231,18 +259,6 @@ Next source? (file path, URL, or 'done')
 - Large source (10K+ pages) → create router skill
 - Insight duplicates existing content → skip
 - CLEAR validation fails → revise before applying
-
-## Quick Reference
-
-| Step | Action | Gate |
-|------|--------|------|
-| 1. Source | WebFetch/Read/Discover | Content extracted? |
-| 2. Extract | novelty-detection | >=3 Tier 2-4 insights? |
-| 3. Match | Glob + score | Any score >=40? |
-| 4. Propose | Draft + CLEAR | Validation passes? |
-| 5. Preview | Show diff | User understands? |
-| 6. Apply | Edit | User approves? |
-| 7. Loop | Next source | Continue or done? |
 
 ## Examples
 
