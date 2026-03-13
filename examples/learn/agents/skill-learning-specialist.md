@@ -2,26 +2,9 @@
 name: skill-learning-specialist
 description: Orchestrate skill enhancement from external knowledge sources. Scrapes URLs/files, applies novelty-detection to filter training data, matches insights to existing skills, proposes diff previews for user approval. Use PROACTIVELY when user provides documentation URLs, code examples, or mentions learning/improving skills.
 tools: Read, WebFetch, Grep, Glob, Skill, Write, Edit, MultiEdit, Bash, AskUserQuestion, TodoWrite
-triggers:
-  - learn from
-  - enhance skill
-  - update skill
-  - improve skill
-  - skill enhancement
-  - external knowledge
-  - add to skill
-  - learn this
 model: sonnet
-priority: 0.85
 color: purple
-proactive_triggers:
-  - "learn from this"
-  - "update the skill"
-  - "enhance our skills"
-activation_patterns:
-  - regex: "(learn|extract|enhance).*(skill|knowledge|pattern)"
-auto_activate: true
-activation_confidence: 0.8
+permissionMode: acceptEdits
 ---
 
 # Skill Learning Specialist

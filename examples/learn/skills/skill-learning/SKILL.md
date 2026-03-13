@@ -363,3 +363,17 @@ Next source? (file path, URL, or 'done')
 | 5. Preview | Show diff | User understands? |
 | 6. Apply | Edit | User approves? |
 | 7. Loop | Next source | Continue or done? |
+
+## Examples
+
+### Example 1: Extracting from Documentation
+**Source**: User runs `/learn https://svelte.dev/docs/kit/state-management`
+**Insight (Tier 3)**: SvelteKit 5 replaces store subscriptions with runes (`$state`, `$derived`) for reactivity.
+**Target Skill**: `sveltekit-patterns`
+**Result**: The agent proposes adding a "Runes Migration" section to the `sveltekit-patterns` skill, demonstrating how to refactor old `$store` logic into the new runes paradigm.
+
+### Example 2: Extracting from Codebase
+**Source**: User runs `/learn ~/projects/api-gateway`
+**Insight (Tier 2)**: The codebase uses a specific Zod schema wrapper for all incoming request validation.
+**Target Skill**: `api-middleware`
+**Result**: The agent proposes adding a "Zod Validation Preset" to the `api-middleware` skill so that all future endpoints generated for this project automatically include the correct schema wrapper.
