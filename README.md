@@ -71,24 +71,46 @@ It discovers skills via AGENTS.md manifests or glob patterns. You choose: copy s
 
 ---
 
-## The Demonstration of Novelty Detection
+## The Demonstration of Skill Judgment
 
 If you feed an AI everything, you teach it nothing! You bloat its context! You drown the signal in noise!
 
-How do we prevent this? We use a strict, unforgiving filter: **Novelty Detection.** When `/learn` reads a document, it asks a beautiful, critical question: *"Does the model already know this?"*
+How do we prevent this? We use a strict, unforgiving filter: **Novelty + Leverage.** When `/learn` reads a document, it asks two critical questions:
+
+1. *"Does the source teach something not already encoded?"*
+2. *"Will preserving this change future agent behavior?"*
 
 We divide all knowledge into four tiers. Pay close attention to Tier 1:
 
 | Tier | Status | What It Means |
 |------|----------|---------------|
 | 1 | **REJECTED!** | Training data. The model already knows it. We throw it away! |
-| 2 | **ACCEPTED** | Implementation details. The precise *how*. |
-| 3 | **HIGH VALUE** | Architectural trade-offs. The *why*. |
-| 4 | **THE HOLY GRAIL** | Counter-intuitive. Contradicts standard assumptions. |
+| 2 | **CANDIDATE** | Implementation details. The precise *how*. |
+| 3 | **STRONG CANDIDATE** | Architectural trade-offs. The *why*. |
+| 4 | **HIGHEST SIGNAL** | Counter-intuitive. Contradicts standard assumptions. |
 
-We are ruthless with Tier 1. We only inject Tiers 2, 3, and 4 into your skills. The result? Pure, concentrated signal. Your skills become incredibly potent, and the context window remains pristine.
+But novelty alone is not enough. A fact can be new and still useless. So every Tier 2-4 candidate must pass the leverage test:
 
-*The system works!*
+| Leverage | What It Means |
+|----------|---------------|
+| 0-1 | Interesting, but unlikely to change future work. Reject it. |
+| 2 | Reusable detail: a command, flag, schema, convention, or implementation move. |
+| 3 | Workflow-changing: affects placement, safety, validation, or debugging behavior. |
+| 4 | Failure-preventing: avoids contradiction, data loss, security risk, or expensive rework. |
+
+Only insights that are both novel and behavior-changing enter a skill. If an insight conflicts with old guidance, `/learn` should replace, qualify, split, or skip it. If it makes old guidance stale, the proposal should delete as well as add.
+
+That is the deeper law: learning must preserve density. A self-improving skill system cannot only accumulate. It must also prune.
+
+So every learned rule needs enough metadata to be inspected later:
+
+```markdown
+<!-- Learned: 2026-05-16 from https://example.com/source -->
+```
+
+Those markers make skill health visible: stale rules, duplicate patterns, missing sources, and sections that have grown too large. When `/learn` finds a domain with no home, it should create a structured stub with triggers, workflow, validation, and provenance, not an empty file.
+
+*The system works when the skill gets sharper, not merely longer.*
 
 ---
 

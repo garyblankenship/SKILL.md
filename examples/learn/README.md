@@ -87,6 +87,8 @@ Most Claude Code setups have static prompts that rot over time. `/learn` makes y
 - Found a plugin marketplace? You can copy the good skills directly!
 - Analyzing a reference implementation? Extract the brilliant patterns into entirely new skills!
 
-The secret to this entire operation is **novelty detection**. If you feed an AI everything, you drown the signal in noise. `/learn` uses a ruthless filter—only Tier 2-4 insights (the *how*, the *why*, and the *counter-intuitive*) make it into your skills. No training data bloat. No redundancy. Just pure, concentrated signal that actually makes your setup better.
+The secret to this entire operation is **novelty plus leverage**. If you feed an AI everything, you drown the signal in noise. `/learn` uses a ruthless filter: first reject Tier 1 training-data knowledge, then reject anything that will not change future behavior. The surviving insights are source-backed rules, workflow changes, validation gates, and failure-preventing exceptions.
+
+Good learning also prunes. If a new source makes old guidance stale, the proposal should replace or qualify the old rule instead of blindly appending another paragraph. The skill gets sharper, not merely longer.
 
 *Physics works! And so does this!*

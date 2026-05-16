@@ -53,6 +53,8 @@ Or, if your assistant doesn't support slash commands, simply ask:
 
 ## The Conclusion: Pure Signal
 
-Just like the Claude Code version, the secret to this unified operation is **novelty detection**. If you feed an AI everything, you drown the signal in noise. This unified skill uses the exact same ruthless filter—only Tier 2-4 insights (the *how*, the *why*, and the *counter-intuitive*) make it into your permanent configuration. 
+Just like the Claude Code version, the secret to this unified operation is **novelty plus leverage**. If you feed an AI everything, you drown the signal in noise. This unified skill first rejects Tier 1 training-data knowledge, then rejects anything that will not change future behavior. The surviving insights are source-backed rules, workflow changes, validation gates, and failure-preventing exceptions.
+
+Good learning also prunes. If a new source makes old guidance stale, the proposal should replace or qualify the old rule instead of blindly appending another paragraph. The skill gets sharper, not merely longer.
 
 *Physics works! And so does this!*
